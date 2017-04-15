@@ -16,6 +16,8 @@ The goals / steps of this project are the following:
 [image_distribution]: ./images/figure_distribution.png "Steering distribution"
 [imageNVIDIA]: ./images/nvidia_architecture.PNG "NVIDIA architecture" 	
 [imageFlipped]: ./images/flip.PNG "Flipped image" 	
+[track_1]: ./images/data_1.PNG "Track 1" 	
+[track_2]: ./images/data_2.PNG "Track 2" 	
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -26,13 +28,15 @@ The goals / steps of this project are the following:
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 **In this link I have summarized my experience along this project: https://www.facebook.com/nacho.sanudo/videos/1428878897171430/
-I hope you like it :) **
+I hope you like it :)**
 
 My project includes the following files:
 * train.py containing the script to create and train the model (I would like to separate the file into model.py+train.py, but there is a bug of python using Windows https://bugs.python.org/issue19539 )
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * writeup_report.md summarizing the results
+* NVIDIA_RUN.mp4 video
+
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -43,7 +47,7 @@ python drive.py model_comma.h5
 
 ####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The train.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ###Model Architecture and Training Strategy
 
@@ -120,26 +124,28 @@ With the scope to tackle with these problems and to improve the driving behavior
 
 To combat the overfitting, I modified the model adding dropout functions.
 
-I have taken two techniques from here https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff
-I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Right][image_distribution]
+I applied two techniques from here https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff
 
-I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Right][imageFlipped]
+The first thing is related with the steering angle, I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Left][image_distribution]
+
+I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Left][imageFlipped]
 
 At the end of the process, the vehicle is able to drive autonomously around the track one without leaving the road.
 
 ####2. Final Model Architecture
 
-The final model architecture is this one ![Right][imageNVIDIA]
+The final model architecture is this one ![Left][imageNVIDIA]
 
 ####3. Creation of the Training Set & Training Process
 
-As I've mentioned above, I've decided to use the Udacity dataset, however, I've also created my own dataset following the course tips (for instance, two laps following the right lanes, two the left etc...)
+As I mentioned above, I decided to use the Udacity dataset, however, I also created my own dataset following the course tips (for instance, two laps following the right lanes, two the left etc...).
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After the collection process, I had this number of images:
+Track 1 --> ![Left][track_1]
+Track 2 --> ![Left][track_2]
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+I didin't test it because I am working with my laptop and I would not like to burn my GPU :S
+As a future work I would like to train and test the first track with this large dataset and test the driving in the second track. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
-
-As a future work I would like to train and test the second track. This project was a very good experience :)
+This project was a very good experience :)
 
