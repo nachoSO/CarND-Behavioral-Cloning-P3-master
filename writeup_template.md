@@ -33,7 +33,7 @@ I hope you like it :)**
 My project includes the following files:
 * train.py containing the script to create and train the model (I would like to separate the file into model.py+train.py, but there is a bug of python using Windows https://bugs.python.org/issue19539 )
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
+* model_NVIDIA.h5 containing a trained convolution neural network 
 * writeup_report.md summarizing the results
 * NVIDIA_RUN.mp4 video
 
@@ -42,7 +42,6 @@ My project includes the following files:
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model_NVIDIA.h5
-python drive.py model_comma.h5
 ```
 
 ####3. Submission code is usable and readable
@@ -52,7 +51,7 @@ The train.py file contains the code for training and saving the convolution neur
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model architecture has been employed
-I've implemented two models:
+I implemented two models:
 
 - NVIDIA (https://arxiv.org/abs/1604.07316)
 ```
@@ -100,7 +99,7 @@ I've implemented two models:
 
 ####2. Attempts to reduce overfitting in the model
 
-Dropout layers are state of the art method to reduce the overfitting as is detailed here (https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf). In order to reduce the overfitting I added dropouts functions after each convolution in the NVIDIA model (train.py nvidia_model function)
+Dropout layers are state of the art method to reduce the overfitting as is detailed here (https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf). In order to reduce the overfitting I added dropouts functions after each convolution layer (train.py nvidia_model function)
 
 ####3. Model parameter tuning
 
@@ -108,36 +107,34 @@ The model used an adam optimizer, using the same configuration detailed in the c
 
 ####4. Appropriate training data
 
-I've created a large dataset however, I am using my laptop's GPU (850M), so, for the sake of simplicity in terms of time, I've decided to use only the Udacity dataset, maybe in the future as challenge, i'll train the entire dataset (2GB more or less) with a decent GPU.
+I created a large dataset however, I am using my laptop's GPU (850M), so, for the sake of simplicity in terms of time, I've decided to use only the Udacity dataset, maybe in the future as challenge, i'll train the entire dataset (2GB more or less) with a decent GPU.
 
 ###Model Architecture and Training Strategy
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to not reinvent the wheel, in order to do so I decided to adopt state of the art techniques to implement in my project, that is, NVIDIA and comma.ai models that are well-known in the community. 
+The overall strategy for deriving a model architecture was to not reinvent the wheel, in order to do so I decided to adopt state of the art techniques in my project, i.e, I implemented NVIDIA and comma.ai models that are well-known in the community. 
 
 My first tries with these models were so bad, there were a few spots where the vehicle fell off the track, as is detailed in the video :)
 
 With the scope to tackle with these problems and to improve the driving behavior, I applied data augmentation into my dataset, I did a little research about some techniques used in data augmentation, these are: 
 
-- (image_processing.py)
-
-To combat the overfitting, I modified the model adding dropout functions, in fact the driving changes a lot adding the dropout functions.
-
-The data augmentation techniques used are these:
+The data augmentation techniques used are in the file image_processing.py, the techniques are:
 
 - The first thing is related with the steering angle, I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Left][image_distribution]
  In order to change the distribution I ignored certain values under certain threshold (as is reflected in this link 
  https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff).
-- The input image in the NVIDIA paper is detailed in this way: "The input image is split into YUV planes and passed to the network.". So, I transformed the images into the YUV space ("The input image is split into YUV planes and passed to the network."). 
-- I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Left][imageFlipped]
+- The input image in the NVIDIA paper is detailed in this way: "The input image is split into YUV planes and passed to the network.". So, I transformed the images into the YUV space. 
+- I also flipped images and angles thinking that this would generalize better the training, this technique was explained in the course slides. For example, here is an image that has then been flipped: ![Left][imageFlipped]
+
+To combat the overfitting, I modified the model adding dropout functions, in fact the driving improves a lot.
 
 At the end of the process, the vehicle is able to drive autonomously around the track one without leaving the road.
 
 ####2. Final Model Architecture
 
 The final model architecture is this one ![Left][imageNVIDIA]
-ELU functions were added also as in the comma.ai model.
+ELU (as in the comma.ai model) and dropout functions were added. RELU functions does not work very well (I don't know why to be honest)
 
 ####3. Creation of the Training Set & Training Process
 
