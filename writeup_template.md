@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image_distribution]: ./figure_distribution.png "Steering distribution"
+[image_distribution]: ./images/figure_distribution.png "Steering distribution"
 [imageNVIDIA]: ./images/nvidia_architecture.PNG "NVIDIA architecture" 	
 [imageFlipped]: ./images/flip.PNG "Flipped image" 	
 
@@ -125,7 +125,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-The final model architecture is this one [imageNVIDIA]
+The final model architecture is this one ![Right][imageNVIDIA]
 
 ####3. Creation of the Training Set & Training Process
 
