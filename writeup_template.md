@@ -16,8 +16,8 @@ The goals / steps of this project are the following:
 [image_distribution]: ./images/figure_distribution.png "Steering distribution"
 [imageNVIDIA]: ./images/nvidia_architecture.PNG "NVIDIA architecture" 	
 [imageFlipped]: ./images/flip.PNG "Flipped image" 	
-[track_1]: ./images/data_1.PNG "Track 1" 	
-[track_2]: ./images/data_2.PNG "Track 2" 	
+[track_1]: ./images/data_1.png "Track 1" 	
+[track_2]: ./images/data_2.png "Track 2" 	
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -122,19 +122,22 @@ With the scope to tackle with these problems and to improve the driving behavior
 
 - (image_processing.py)
 
-To combat the overfitting, I modified the model adding dropout functions.
+To combat the overfitting, I modified the model adding dropout functions, in fact the driving changes a lot adding the dropout functions.
 
-I applied two techniques from here https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff
+The data augmentation techniques used are these:
 
-The first thing is related with the steering angle, I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Left][image_distribution]
-
-I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Left][imageFlipped]
+- The first thing is related with the steering angle, I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Left][image_distribution]
+ In order to change the distribution I ignored certain values under certain threshold (as is reflected in this link 
+ https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff).
+- The input image in the NVIDIA paper is detailed in this way: "The input image is split into YUV planes and passed to the network.". So, I transformed the images into the YUV space ("The input image is split into YUV planes and passed to the network."). 
+- I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Left][imageFlipped]
 
 At the end of the process, the vehicle is able to drive autonomously around the track one without leaving the road.
 
 ####2. Final Model Architecture
 
 The final model architecture is this one ![Left][imageNVIDIA]
+ELU functions were added also as in the comma.ai model.
 
 ####3. Creation of the Training Set & Training Process
 
