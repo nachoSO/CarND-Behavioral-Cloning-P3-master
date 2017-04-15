@@ -15,15 +15,10 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
-[image8]: ./figure_distribution.png "Steering distribution"
- 	
+[image_distribution]: ./figure_distribution.png "Steering distribution"
+[imageNVIDIA]: ./images/nvidia_architecture.PNG "NVIDIA architecture" 	
+[imageFlipped]: ./images/flip.PNG "Flipped image" 	
+
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
@@ -41,7 +36,8 @@ My project includes the following files:
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
-python drive.py model.h5
+python drive.py model_NVIDIA.h5
+python drive.py model_comma.h5
 ```
 
 ####3. Submission code is usable and readable
@@ -52,10 +48,8 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 I've implemented two models:
-- NVIDIA (https://arxiv.org/abs/1604.07316)
-- comma.ai (https://github.com/commaai/research/blob/master/train_steering_model.py)
 
-- NVIDIA
+- NVIDIA (https://arxiv.org/abs/1604.07316)
 ```
  model = Sequential()
  model.add(Lambda(lambda x: x/127.5 - 1.,
@@ -80,7 +74,7 @@ I've implemented two models:
  model.add(ELU())
  model.add(Dense(1))
 ```
-- comma.ai
+- comma.ai (https://github.com/commaai/research/blob/master/train_steering_model.py)
 ```
  Cropping2D(cropping=((70,25),(0,0)), input_shape=(160,320,3))
  Lambda(lambda x: x/255.0 - 0.5)
@@ -97,7 +91,7 @@ I've implemented two models:
  ELU()
  Dense(1)
 ```
-For the sake of simplicity I will talk about the NVIDIA model for the rest of the report, because, the comma.ai model was full taken from the comma.ai github with only just one modification (I added a cropping layer).
+**For the sake of simplicity I will detailed my implementation of the NVIDIA model for the rest of the report, because, the comma.ai model was full taken from the comma.ai github with only just one modification (I added a cropping layer).**
 
 ####2. Attempts to reduce overfitting in the model
 
@@ -105,7 +99,7 @@ Dropout layers are state of the art method to reduce the overfitting as is detai
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, the same configuration detailed in the course.
+The model used an adam optimizer, using the same configuration detailed in the course.
 
 ####4. Appropriate training data
 
@@ -131,28 +125,13 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-The final model architecture 
+The final model architecture is this one [imageNVIDIA]
 
 ####3. Creation of the Training Set & Training Process
 
 As I've mentioned above, I've decided to use the Udacity dataset, however, I've also created my own dataset following the course tips (for instance, two laps following the right lanes, two the left etc...)
 
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
+To augment the data sat, I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: [imageFlipped]
 
 After the collection process, I had X number of data points. I then preprocessed this data by ...
 
