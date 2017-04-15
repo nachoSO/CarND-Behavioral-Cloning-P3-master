@@ -51,37 +51,63 @@ The model.py file contains the code for training and saving the convolution neur
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model architecture has been employed
-The architecture is based on the comma.ai model adding a cropping to avoid confuse the training set
-https://github.com/commaai/research/blob/master/train_steering_model.py
+I've implemented two models:
+- NVIDIA (https://arxiv.org/abs/1604.07316)
+- comma.ai (https://github.com/commaai/research/blob/master/train_steering_model.py)
 
-  Cropping2D(cropping=((70,25),(0,0)), input_shape=(160,320,3))
-  Lambda(lambda x: x/255.0 - 0.5)
-  Convolution2D(16, 8, 8, subsample=(4, 4), border_mode="same")
-  ELU()
-  Convolution2D(32, 5, 5, subsample=(2, 2), border_mode="same")
-  ELU()
-  Convolution2D(64, 5, 5, subsample=(2, 2), border_mode="same")
-  Flatten()
-  Dropout(.2)
-  ELU()
-  Dense(512)
-  Dropout(.5)
-  ELU()
-  Dense(1)
+- NVIDIA
+ model = Sequential()
+ model.add(Lambda(lambda x: x/127.5 - 1.,
+        input_shape=(row, col,ch),
+        output_shape=(row, col,ch)))
+ model.add(Cropping2D(cropping=((70,25),(0,0))))
+ model.add(Dropout(.1))
+ model.add(Convolution2D(24,5,5, subsample=(2,2),activation="relu"))
+ model.add(Dropout(.2))
+ model.add(Convolution2D(36,5,5, subsample=(2,2),activation="relu"))
+ model.add(Dropout(.2))
+ model.add(Convolution2D(48,5,5, subsample=(2,2),activation="relu"))
+ model.add(Dropout(.2))
+ model.add(Convolution2D(64,3,3, subsample=(2,2),activation="relu"))
+ model.add(Dropout(.5))
+ model.add(Flatten())
+ model.add(Dense(100))
+ model.add(ELU())
+ model.add(Dense(50))
+ model.add(ELU())
+ model.add(Dense(10))
+ model.add(ELU())
+ model.add(Dense(1))
+
+- comma.ai
+ Cropping2D(cropping=((70,25),(0,0)), input_shape=(160,320,3))
+ Lambda(lambda x: x/255.0 - 0.5)
+ Convolution2D(16, 8, 8, subsample=(4, 4), border_mode="same")
+ ELU()
+ Convolution2D(32, 5, 5, subsample=(2, 2), border_mode="same")
+ ELU()
+ Convolution2D(64, 5, 5, subsample=(2, 2), border_mode="same")
+ Flatten()
+ Dropout(.2)
+ ELU()
+ Dense(512)
+ Dropout(.5)
+ ELU()
+ Dense(1)
+
+For the sake of simplicity I will talk about the NVIDIA model for the rest of the report, because, the comma.ai model was full taken from the comma.ai github with only just one modification (I added a cropping layer).
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting as is detailed in the comma.ai architecture. 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+Dropout layers are state of the art method to reduce the overfitting as is detailed here (https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf). In order to reduce the overfitting I added dropouts functions after each convolution in the NVIDIA model (train.py nvidia_model function)
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, the same configuration detailed in the course.
 
 ####4. Appropriate training data
 
-I've created a large dataset however, I am using my laptop's GPU (850M), so, for the sake of simplicity in terms of time, I've decided to use only the Udacity dataset, maybe in the future as challenge, i'll train the entire datase (2GB more or less) with a decent GPU.
+I've created a large dataset however, I am using my laptop's GPU (850M), so, for the sake of simplicity in terms of time, I've decided to use only the Udacity dataset, maybe in the future as challenge, i'll train the entire dataset (2GB more or less) with a decent GPU.
 
 ###Model Architecture and Training Strategy
 
