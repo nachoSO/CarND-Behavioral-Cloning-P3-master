@@ -56,6 +56,7 @@ I've implemented two models:
 - comma.ai (https://github.com/commaai/research/blob/master/train_steering_model.py)
 
 - NVIDIA
+```
  model = Sequential()
  model.add(Lambda(lambda x: x/127.5 - 1.,
         input_shape=(row, col,ch),
@@ -78,8 +79,9 @@ I've implemented two models:
  model.add(Dense(10))
  model.add(ELU())
  model.add(Dense(1))
-
+```
 - comma.ai
+```
  Cropping2D(cropping=((70,25),(0,0)), input_shape=(160,320,3))
  Lambda(lambda x: x/255.0 - 0.5)
  Convolution2D(16, 8, 8, subsample=(4, 4), border_mode="same")
@@ -94,7 +96,7 @@ I've implemented two models:
  Dropout(.5)
  ELU()
  Dense(1)
-
+```
 For the sake of simplicity I will talk about the NVIDIA model for the rest of the report, because, the comma.ai model was full taken from the comma.ai github with only just one modification (I added a cropping layer).
 
 ####2. Attempts to reduce overfitting in the model
