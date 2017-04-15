@@ -1,6 +1,4 @@
 #**Behavioral Cloning** 
-
-##Writeup Template
 ---
 
 **Behavioral Cloning Project**
@@ -26,6 +24,9 @@ The goals / steps of this project are the following:
 ###Files Submitted & Code Quality
 
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+
+**In this link I have summarized my experience along this project: https://www.facebook.com/nacho.sanudo/videos/1428878897171430/
+I hope you like it :) **
 
 My project includes the following files:
 * train.py containing the script to create and train the model (I would like to separate the file into model.py+train.py, but there is a bug of python using Windows https://bugs.python.org/issue19539 )
@@ -109,19 +110,22 @@ I've created a large dataset however, I am using my laptop's GPU (850M), so, for
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to not reinvent the wheel, in order to do so I decided to adopt state of the art techniques to implement in my project, that is, NVIDIA and comma.ai models that are well-known in the community. 
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first tries with these models were so bad, there were a few spots where the vehicle fell off the track, as is detailed in the video :)
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+With the scope to tackle with these problems and to improve the driving behavior, I applied data augmentation into my dataset, I did a little research about some techniques used in data augmentation, these are: 
 
-To combat the overfitting, I modified the model so that ...
+- (image_processing.py)
 
-Then I ... 
+To combat the overfitting, I modified the model adding dropout functions.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+I have taken two techniques from here https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff
+I detected that the angle distribution was very unbalanced with a big amount of zeros in the distribution, the original distribution is shown here: ![Right][image_distribution]
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: ![Right][imageFlipped]
+
+At the end of the process, the vehicle is able to drive autonomously around the track one without leaving the road.
 
 ####2. Final Model Architecture
 
@@ -131,11 +135,11 @@ The final model architecture is this one ![Right][imageNVIDIA]
 
 As I've mentioned above, I've decided to use the Udacity dataset, however, I've also created my own dataset following the course tips (for instance, two laps following the right lanes, two the left etc...)
 
-To augment the data sat, I also flipped images and angles thinking that this would generalize better the training. For example, here is an image that has then been flipped: [imageFlipped]
-
 After the collection process, I had X number of data points. I then preprocessed this data by ...
-
 
 I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+As a future work I would like to train and test the second track. This project was a very good experience :)
+
